@@ -19,6 +19,22 @@ dateFieldEl.valueAsNumber = Date.now()-(new Date()).getTimezoneOffset()*60000;
 
 selectAllButtonEl.addEventListener("click", selectAllItems)
 
+function copyDataToArray(){
+    onValue(classList1BInDB, (snapshot) => {
+    const dataArray = []
+    snapshot.forEach((childSnapshot) => {
+        const childData = childSnapshot.val()
+        dataArray.push(childData)
+    })
+    console.log(dataArray)
+
+    })
+}
+copyDataToArray()
+
+
+
+
 function selectAllItems(){
     const items = attendanceListEl.querySelectorAll("li")
     let selectedValues = []
@@ -64,10 +80,14 @@ function appendItemToAttendanceListEl(item) {
     let newEl = document.createElement("li")
 
     newEl.textContent = itemValue
-    
-    newEl.addEventListener("dblclick", function(){
-        let exactLocationOfItemInDB = ref(database, `classList1B/${itemID}`)
-        remove (exactLocationOfItemInDB)
-    })
     attendanceListEl.append(newEl)
+
+    newEl.addEventListener("dblclick", function () {
+        newEl.remove();
+        let indexToRemove = dataArray.indexOf(itemValue)
+        if(indexToRemove != -1){
+            dataArray.splice(indexToRemove, 1);
+        }
+    })
+
 }
